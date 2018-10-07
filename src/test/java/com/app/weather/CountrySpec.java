@@ -31,22 +31,23 @@ public class CountrySpec {
 
 	@Test
 	public void countryShouldBeSaved() {
-		
+
 		// Arrange
 		Country india = new Country();
 		Country brazil = new Country();
 		india.setName("India");
 		brazil.setName("Brazil");
-		
+
 		// Act
 		entityManager.getTransaction().begin();
 		entityManager.persist(india);
 		entityManager.persist(brazil);
 		entityManager.getTransaction().commit();
-		TypedQuery<Country> retrieveCountry = entityManager.createQuery("SELECT c FROM Country c", Country.class);
+		TypedQuery<Country> retrieveCountryQuery = entityManager.createQuery("SELECT c FROM Country c", Country.class);
 		List<String> actualCountryNames = Arrays.asList("India", "Brazil");
-		List<String> countryNames = retrieveCountry.getResultList().stream().map(Country::getName).collect(Collectors.toList());
-		
+		List<String> countryNames = retrieveCountryQuery.getResultList().stream().map(Country::getName)
+				.collect(Collectors.toList());
+
 		// Assert
 		assertThat(countryNames, is(actualCountryNames));
 	}
